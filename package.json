@@ -1,5 +1,5 @@
 {
-  "name": "popper",
+  "name": "v-poppers",
   "version": "0.1.0",
   "private": false,
   "main": "lib/index.umd.min.js",

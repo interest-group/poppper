@@ -15,6 +15,10 @@ node_modules
 .env.local
 .env.*.local
 
+# npm 
+# /src/
+
+
 # Log files
 npm-debug.log*
 yarn-debug.log*
