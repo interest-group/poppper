@@ -2,11 +2,13 @@
 
 # Chinse Version
 
-基于vue的一个Popper容器浮动库
-
 给定一个元素（比如一个按钮）和一个描述它的工具提示元素，Popper会自动将弹框提示放在元素附近的正确位置。
 
 它将定位从文档流中“弹出”并浮动在目标元素附近的任何UI元素。最常见的例子是工具提示，但它也包括弹出窗口、下拉菜单等。所有这些都可以泛称为“popper”元素。
+
+
+## npmUrl
+<https://www.npmjs.com/package/v-poppers>
 
 
 ## 为什么使用Popper库？

@@ -16,7 +16,7 @@ node_modules
 .env.*.local
 
 # npm 
-# /src/
+# /src
 
 
 # Log files
