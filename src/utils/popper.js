@@ -267,6 +267,12 @@ const getPackageOptions = (opt) => {
   return options
 }
 
+function getAppendParentNode() {
+  return checkNode(this.options.appendParentNode) ? 
+  this.options.appendParentNode : 
+  document.getElementsByTagName('body')[0]
+}
+
 function init(el, trackNode, options) {
   this.el = getTrackEle(el)
   this.trackNode = getTrackEle(trackNode)
@@ -275,9 +281,7 @@ function init(el, trackNode, options) {
   this.list = getParentScrollList.call(this)
 
   // 判断是否加到父级元素上
-  const appendParentNode = checkNode(this.options.appendParentNode) ? 
-  this.options.appendParentNode : 
-  document.getElementsByTagName('body')[0]
+  const appendParentNode = getAppendParentNode.call(this)
   
   const parentNode = this.el.parentNode
   
@@ -334,7 +338,9 @@ function Popper(el, trackNode, options = {}) {
   }
 
   this.destroy = function() {
-    document.getElementsByTagName('body')[0].removeChild(this.el)
+    // 判断是否加到父级元素上
+    const appendParentNode = getAppendParentNode.call(this)
+    appendParentNode.removeChild(this.el)
     removeEvent.call(this)
     this.hands = null
   }
