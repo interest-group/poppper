@@ -1,6 +1,6 @@
 {
   "name": "v-poppers",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "private": false,
   "main": "lib/index.umd.min.js",
   "description": "Popper floating pop up library",
