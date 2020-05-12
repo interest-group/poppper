@@ -72,27 +72,45 @@ function horizontalDirection({windowInner, popepInner, targetInner, scrollInner}
 
   const leftInner = targetInner.left + inner
   const surplusInner = windowInner.innerWidth - targetInner.left
-  const popperInner = popepInner.offsetWidth + this.options.offset.x - this.options.exce
+  const popperInner = popepInner.offsetWidth + this.options.offset.x - this.options.exceed.x
   const rightInner = windowInner.innerWidth - targetInner.right + inner
-
-  if (leftInner < popperInner || surplusInner < popepInner.offsetWidth) {
-    setNodeClass(this.el, this.options, 'right')
-    position = 'right'
-    left += this.options.offset.x
-  }
-  else if (rightInner < popperInner ) {
-    
-    setNodeClass(this.el, this.options, 'left')
-    position = 'left'
-    left -= this.options.offset.x
-  } else {
-    position = 'inherit'
-    setNodeClass(this.el, this.options, 'inherit')
-
-    if (this.options.trackPosition.includes('left')) {
+  if (configOptions.isStartOrEnd(this.options.trackPosition)) {
+    if (leftInner < popperInner || surplusInner < popepInner.offsetWidth) {
+      setNodeClass(this.el, this.options, 'right')
+      position = 'right'
+      left += this.options.offset.x
+    }
+    else if (rightInner < popperInner || targetInner.right < popepInner.offsetWidth) {
+      setNodeClass(this.el, this.options, 'left')
+      position = 'left'
       left -= this.options.offset.x
     } else {
+      position = 'inherit'
+      setNodeClass(this.el, this.options, 'inherit')
+      if (this.options.trackPosition.includes('left')) {
+        left -= this.options.offset.x
+      } else {
+        left += this.options.offset.x
+      }
+    }
+  } else {
+    if (leftInner < popperInner) {
+      setNodeClass(this.el, this.options, 'right')
+      position = 'right'
       left += this.options.offset.x
+    } 
+    else if (rightInner < popperInner) {
+      setNodeClass(this.el, this.options, 'left')
+      position = 'left'
+      left -= this.options.offset.x
+    } else {
+      position = 'inherit'
+      setNodeClass(this.el, this.options, 'inherit')
+      if (this.options.trackPosition.includes('left')) {
+        left -= this.options.offset.x
+      } else {
+        left += this.options.offset.x
+      }
     }
   }
   return {

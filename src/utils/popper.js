@@ -33,7 +33,7 @@ const getParentInner = (node) => {
   const innerWidth = node.offsetWidth
   const innerHeight = node.offsetHeight
   const scrollHeight = node.scrollHeight
-
+  
   return {
     innerWidth,
     innerHeight,
@@ -83,7 +83,6 @@ function getTrackParentWindowInner() {
   const bottom = targetVal.bottom - parentNodeVal.top
   const left = targetVal.left - parentNodeVal.left
   const right = targetVal.right - parentNodeVal.left
-  // console.log(left)
   return {
     top,
     bottom,
