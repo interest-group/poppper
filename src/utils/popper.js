@@ -7,6 +7,7 @@ const METHODS_LIST = configOptions.POSTIION_LIST
 function checkNode(node) {
   return (node && node instanceof HTMLElement)
 }
+
 function getWindowInner() {
   if (this.options.position === 'fixed' || !checkNode(this.options.appendParentNode)) {
     return getDocumentInner()
@@ -26,6 +27,7 @@ const getDocumentInner = () => {
     scrollHeight
   }
 }
+
 // 父元素宽高
 const getParentInner = (node) => {
   const innerWidth = node.offsetWidth
@@ -72,14 +74,16 @@ function getTrackBasicWindowInner(trackNode) {
 }
 
 // 要跟踪节点各值基于父元素
-function getTrackParentWindowInner(parentNode) {
+function getTrackParentWindowInner() {
+  const targetVal = this.trackNode.getBoundingClientRect()
+  const parentNodeVal = this.options.appendParentNode.getBoundingClientRect()
   const width = this.trackNode.offsetWidth
   const height = this.trackNode.offsetHeight
-  const top = this.trackNode.offsetTop - parentNode.scrollTop
-  const bottom = this.trackNode.offsetTop - parentNode.scrollTop + height
-  const left = this.trackNode.offsetLeft - parentNode.scrollLeft
-  const right = this.trackNode.offsetLeft - parentNode.scrollLeft + width
-
+  const top = targetVal.top - parentNodeVal.top
+  const bottom = targetVal.bottom - parentNodeVal.top
+  const left = targetVal.left - parentNodeVal.left
+  const right = targetVal.right - parentNodeVal.left
+  // console.log(left)
   return {
     top,
     bottom,
@@ -143,19 +147,18 @@ function scrollInner(val) {
     scrollLeft
   }
 }
+
 function getTagNameToLowerCase(val) {
   return val.toLowerCase()
 }
 
 function scroll(e) {
-  if (this.el.style.display !== 'none') {
-    if (e.target.nodeName === '#document') {
-      scrollInner.call(this, e.target.scrollingElement)
-    } else {
-      scrollInner.call(this, e.target)
-    }
-    calculation.call(this)
+  if (e.target.nodeName === '#document') {
+    scrollInner.call(this, e.target.scrollingElement)
+  } else {
+    scrollInner.call(this, e.target)
   }
+  calculation.call(this)
 }
 
 // 盒子滚动以及尺寸变化事件
@@ -166,9 +169,7 @@ const HandEvent = function(_this) {
         scroll.call(_this, e)
         break;
       case 'resize':
-        if (_this.el.style.display !== 'none') {
-          calculation.call(_this)
-        }
+        calculation.call(_this)
         break;
     }
   }
@@ -221,6 +222,7 @@ function getHumpMethods(val) {
   let strList = val.split('-')
   return strList[0] + strList[1].replace(strList[1][0], strList[1][0].toUpperCase())
 }
+
 function calculationType() {
   let windowInner = getWindowInner.call(this)
   let popepInner = getPoperInner(this.el)
@@ -263,11 +265,15 @@ const getPackageOptions = (opt) => {
   options.trackPosition = options.trackPosition || DEFAULT_OPTIONS.trackPosition
   options.styles = options.styles || Object.assign({}, DEFAULT_OPTIONS.styles)
   options.appendParentNode = options.appendParentNode || DEFAULT_OPTIONS.appendParentNode
+  options.isAppendParentNode = options.isAppendParentNode === '' ? DEFAULT_OPTIONS.isAppendParentNode : options.isAppendParentNode
   
   return options
 }
 
 function getAppendParentNode() {
+  if (this.options.isAppendParentNode) {
+    this.options.appendParentNode = this.list[0]
+  } 
   return checkNode(this.options.appendParentNode) ? 
   this.options.appendParentNode : 
   document.getElementsByTagName('body')[0]
@@ -299,7 +305,6 @@ function init(el, trackNode, options) {
 
 }
 
-
 function Popper(el, trackNode, options = {}) {
 
   init.call(this, el, trackNode, options)
@@ -319,14 +324,6 @@ function Popper(el, trackNode, options = {}) {
     calculation.call(this)
     return this
   }
-
-  // this.reset = function() {
-  //   this.scrollInner = {
-  //     scrollTop: 0,
-  //     scrollLeft: 0
-  //   }
-  //   this.setOptions({})
-  // },
 
   this.setOptions = function(options = {}) {
     this.options = getPackageOptions(options)

@@ -140,6 +140,7 @@ export default {
 |offset|object|popper元素偏移量| 任何有用数值| {x: 0, y: 0}|
 |exceed|object|popper元素被隐藏多少开始计算位置| 任何有用数值| {x: 0, y: 0}|
 |appendParentNode|HTMLElement|popper元素所需要被追加到的父元素， 不传会被默认加载body上| DOM | null |
+|isAppendParentNode|boolean|如果不明确父级元素， 可指定此属性为true， 会将popper追加到里被跟踪元素最近的一个滚动父级容器上| -- | false |
 |className|object|popper元素所在相对于跟踪元素节点位置的class样式| 见表格下文 | -- |
 |styles|object|popper元素 的styles样式| 任何可用的style样式 | {} |
 

@@ -3,6 +3,7 @@ const DEFAULT_OPTIONS =  {
   position: 'absolute',
   trackPosition: 'bottom-start',
   appendParentNode: null,
+  isAppendParentNode: false,
   offset: {
     x: 0,
     y: 0

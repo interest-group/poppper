@@ -30,13 +30,16 @@ function verticalDirection({windowInner, popepInner, targetInner, scrollInner}) 
   } else {
     top = targetInner.top + scrollInner.scrollTop 
   }
-  
-  if (targetInner.top < popepInner.offsetHeight + this.options.offset.y - this.options.exceed.y) {
+  const topInner = targetInner.top
+  const popperInner = popepInner.offsetHeight + this.options.offset.y - this.options.exceed.y
+  const bottomInner = windowInner.innerHeight - targetInner.bottom
+
+  if (topInner < popperInner) {
     setNodeClass(this.el, this.options, 'bottom')
     position = 'bottom'
     top += this.options.offset.y
   } 
-  else if (windowInner.innerHeight - targetInner.bottom < popepInner.offsetHeight + this.options.offset.y - this.options.exceed.y) {
+  else if (bottomInner < popperInner) {
     position = 'top'
     setNodeClass(this.el, this.options, 'top')
     top -= this.options.offset.y
@@ -68,14 +71,17 @@ function horizontalDirection({windowInner, popepInner, targetInner, scrollInner}
   } 
 
   const leftInner = targetInner.left + inner
+  const surplusInner = windowInner.innerWidth - targetInner.left
+  const popperInner = popepInner.offsetWidth + this.options.offset.x - this.options.exce
   const rightInner = windowInner.innerWidth - targetInner.right + inner
-  if (leftInner < popepInner.offsetWidth + this.options.offset.x - this.options.exceed.x) {
+
+  if (leftInner < popperInner || surplusInner < popepInner.offsetWidth) {
     setNodeClass(this.el, this.options, 'right')
     position = 'right'
     left += this.options.offset.x
   }
-
-  else if (rightInner < popepInner.offsetWidth + this.options.offset.x - this.options.exceed.x) {
+  else if (rightInner < popperInner ) {
+    
     setNodeClass(this.el, this.options, 'left')
     position = 'left'
     left -= this.options.offset.x
@@ -95,10 +101,12 @@ function horizontalDirection({windowInner, popepInner, targetInner, scrollInner}
   }
 }
 
+
 export default {
   bottomStart({windowInner, popepInner, targetInner, scrollInner}) {
     let horizontal = horizontalDirection.call(this, {windowInner, popepInner, targetInner, scrollInner})
     let vertical = verticalDirection.call(this, {windowInner, popepInner, targetInner, scrollInner})
+
     if (horizontal.position === 'right') {
       horizontal.left += targetInner.width - popepInner.offsetWidth
     }
